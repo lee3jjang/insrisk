@@ -32,6 +32,7 @@ release = 'v1.0.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    "sphinx.ext.githubpages",
     'nbsphinx',
     'sphinx.ext.autosummary',
     'IPython.sphinxext.ipython_console_highlighting',
@@ -88,8 +89,8 @@ html_theme_options = {
     'repo_type': 'github',
     'logo_icon': '&#xe80e',
     "master_doc": False,
-    'html_minify': True,
-    'css_minify': True,
+    'html_minify': False,
+    'css_minify': False,
     'version_dropdown': True,
     'google_analytics_account': 'UA-XXXXX',
     'version_info': {
@@ -97,3 +98,5 @@ html_theme_options = {
       "development": "devel",
    },
 }
+
+html_baseurl = 'https://lee3jjang.github.io/insrisk/'
