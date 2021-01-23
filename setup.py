@@ -7,7 +7,7 @@ AUTHOR = 'SangJin'
 AUTHOR_EMAIL = 'lee3jjang@gmail.com'
 URL = 'https://github.com/lee3jjang/insrisk'
 SETUP_DIR = split(abspath(__file__))[0]
-with open(pjoin(SETUP_DIR, 'README.rst')) as readme:
+with open(pjoin(SETUP_DIR, 'README.rst'), encoding='utf8') as readme:
     README = readme.read()
 LONG_DESCRIPTION = README
 
