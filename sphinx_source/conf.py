@@ -81,7 +81,6 @@ html_theme_options = {
     "heroes": {
         "index": "보험RM파트 업무용 라이브러리",
     },
-    # 'base_url': 'https://www.directdb.co.kr',
     'color_primary': 'blue',
     'color_accent': 'light-blue',
     'repo_url': 'https://github.com/lee3jjang/insrisk',
