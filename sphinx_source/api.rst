@@ -6,4 +6,4 @@ API 참조
 ~~~~~~~~
 .. autosummary::
     
-    ~insrisk.tools
+    ~insrisk.data

@@ -7,4 +7,4 @@ result = tb.load_tb_all(FOLDERPATH)
 print(result)
 
 # python setup.py bdist_wheel
-# pip install dist\
+# pip install --force-reinstall dist\
