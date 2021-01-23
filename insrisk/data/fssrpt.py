@@ -4,26 +4,22 @@ import pandas as pd
 from ..tools import *
 
 def load_fssrpt(filepath, code):
-    """
-        Description
-        -----------
-        Raw Data → 정제된 업무보고서로 변환
-        
-        Input
-        -----
-        path : 파일경로
-        code : 사업실적표 코드(AI004, AI009, ...) (대문자로 입력 해야 함)
-        
-        Output
-        ------
-        dataframe : 정제된 업무보고서
-        
-        Example
-        -------
-        from fss_rpt import load_rpt
-        ai059 = load_rpt('data/업무보고서_201701.xlsx', 'AI059')
-    """
+    """금감원 업무보고서 파일별 추출 및 가공
+               
+    :param filepath: 업무보고서 파일 경로
+    :type filepath: str
+    :param code: 업무보고서 코드(AI004, AI009, ...)
+    :type code: str
+    :return: 정제된 업무보고서
+    :rtype: DataFrame
+    
+    .. ipython:: python
 
+        from insrisk.data import fssrpt
+        ai059 = fssrpt.load_fssrpt('data/업무보고서_201701.xlsx', 'AI059')
+    
+    """
+    code_upper = code.upper()
     locations = {
         'AI004': (11, 2),
         'AI009': (11, 2),
@@ -34,35 +30,37 @@ def load_fssrpt(filepath, code):
         'AI135': (12, 2),
         'AI163': (12, 3),
     }
-    if code not in locations.keys():
+    if code_upper not in locations.keys():
         raise Exception('코드 입력 에러')
     else:
-        x, y = locations.get(code)
-    df = pd.read_excel(filepath, sheet_name=code)
+        x, y = locations.get(code_upper)
+    df = pd.read_excel(filepath, sheet_name=code_upper)
     index = df.iloc[x:, 0].str.replace('\r\n', '').values
     columns = df.iloc[9, y:].values
     rpt = pd.DataFrame(df.iloc[x:, y:].values, index=index, columns=columns).fillna(0).astype(float)
     return rpt
 
 def load_fssrpt_all(folderpath, code):
-    """
-        Description   
-        -----------
-        경로 안에 있는 사업실적표 전부 로드하여 dict 형태로 반환
-        ※ 파일명 "업무보고서_yyyymm.xlsx" 형태로 되어 있어야 함
-        
-        Input
-        -----
-        path : 파일들이 들어 있는 경로
-        code : 업무보고서 코드 (AI059, AI004 등)
-        
-        Output
-        ------
-        dict (key: 기준년월, value: 보고서 데이터프레임)
-        
-        Example
-        -------
-        rpt = load_rpt_all('data', 'AI059')
+    """금감원 업무보고서 폴더별 추출 및 가공
+
+    Parameters
+    ----------
+    folderpath : 업무보고서 폴더 경로
+    code : 업무보고서 코드 (AI059, AI004 등)
+    
+    Returns
+    -------
+    dict : key=기준년월, value=보고서 데이터프레임
+    
+    Examples
+    --------
+    >>> from insrisk.data import fssrpt
+    >>> rpt = fssrpt.load_fssrpt_all('data', 'AI059')
+    
+    Warnings
+    --------
+    파일명 "업무보고서_yyyymm.xlsx" 형태로 되어 있어야 함
+
     """
     
     # 기준년월 생성 및 데이터 목록 유효성 검증

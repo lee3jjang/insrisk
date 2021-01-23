@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -99,3 +99,5 @@ html_theme_options = {
 }
 
 html_baseurl = 'https://lee3jjang.github.io/insrisk/'
+
+autosummary_generate = True
