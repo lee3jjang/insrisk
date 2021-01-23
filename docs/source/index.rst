@@ -9,6 +9,7 @@
 
 .. ipython:: python
 
+   import insrisk.utils
    import numpy as np
    x = np.array([1, 4, 5])
    print(x)
