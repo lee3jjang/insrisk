@@ -1,7 +1,7 @@
 @Echo Off
 set SPHINXBUILD=sphinx-build
-set SOURCEDIR=source
-set BUILDDIR=.
+set SOURCEDIR=sphinx_source
+set BUILDDIR=docs
 
 %SPHINXBUILD% -M html %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 FOR /D %%I IN (./%BUILDDIR%/html/*) DO (
