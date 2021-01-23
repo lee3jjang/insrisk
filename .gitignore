@@ -2,6 +2,6 @@
 __pycache__
 .vscode
 docs/build
-# build
-# dist
-# insrisk.egg-info
+build
+dist
+insrisk.egg-info
