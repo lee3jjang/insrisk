@@ -13,7 +13,7 @@ LONG_DESCRIPTION = README
 
 setup(
     name=DISTNAME,
-    version='v1.0.0',
+    version='1.0.0',
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
     description=DESCRIPTION,
