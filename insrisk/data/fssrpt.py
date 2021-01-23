@@ -45,12 +45,15 @@ def load_fssrpt_all(folderpath, code):
 
     Parameters
     ----------
-    folderpath : 업무보고서 폴더 경로
-    code : 업무보고서 코드 (AI059, AI004 등)
+    folderpath : str
+        업무보고서 폴더 경로
+    code : str
+        업무보고서 코드 (AI059, AI004 등)
     
     Returns
     -------
-    dict : key=기준년월, value=보고서 데이터프레임
+    dict
+        key: 기준년월, value: 보고서(DataFrame) 인 dictionary
     
     Examples
     --------
