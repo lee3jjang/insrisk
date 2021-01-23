@@ -12,7 +12,7 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -22,7 +22,7 @@ copyright = '2021, SangJin'
 author = 'SangJin'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = 'v1.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +31,11 @@ release = '1.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', 'nbsphinx'
+    'sphinx.ext.autodoc',
+    'nbsphinx',
+    'sphinx.ext.autosummary',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'IPython.sphinxext.ipython_directive',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -67,16 +71,14 @@ html_sidebars = {
 }
 
 html_theme_options = {
-    "nav_title": '보험RM파트 업무용 라이브러리',
+    "nav_title": 'insrisk ' + release,
     "nav_links": [
         {"href": "https://vm.dbins.co.kr", "title": "업무가상PC", "internal": False},
         {"href": "https://www.mdbins.com:8100", "title": "외부포탈", "internal": False},
         {"href": "https://mail.dbins.co.kr", "title": "외부메일", "internal": False},
     ],
     "heroes": {
-        "index": "This is Index Page",
-        "nbtest": "Notebook Test Page",
-        "my_package": "Sample Module Page",
+        "index": "보험RM파트 업무용 라이브러리",
     },
     # 'base_url': 'https://www.directdb.co.kr',
     'color_primary': 'blue',

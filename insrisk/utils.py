@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 
 # 수정일자 : 2020.11.26
 
-# xlsx → csv 변환
 def convert_to_csv(path, filename, dtype):
     """
         Example
@@ -23,7 +22,6 @@ def convert_to_csv(path, filename, dtype):
     tmp = pd.concat(result)
     tmp.to_csv(f'{path}/{filename}.csv', index=False)
     
-# 정합성 검사
 def validate_uniqueness(df, group, var):
     """
         Description
@@ -40,15 +38,15 @@ def validate_uniqueness(df, group, var):
         -------
         >> validate_uniqueness(contract, '증권번호', '증권개시일')    
     """
+
     if type(group) == list:
         x = df[group + [var]].drop_duplicates().groupby(group).size()
     else:
         x = df[[group, var]].drop_duplicates().groupby(group).size()
     return x[x>1].index
 
-# 기준년월생성
 def generate_yyyymm(start_yyyymm, end_yyyymm, typ=1):
-    '''
+    """
         Description
         -----------
         기준년월 리스트를 %Y%m 형식으로 생성
@@ -57,7 +55,8 @@ def generate_yyyymm(start_yyyymm, end_yyyymm, typ=1):
         -------
         yyyymm_list = generate_yyyymm((2017, 1), (2019, 12))
         
-    '''
+    """
+
     (start_year, start_month), (end_year, end_month) = start_yyyymm, end_yyyymm
     yyyymm_list = []
     year_month = datetime(start_year, start_month, 1)
@@ -70,7 +69,7 @@ def generate_yyyymm(start_yyyymm, end_yyyymm, typ=1):
     return yyyymm_list
 
 def __load_rpt(path, code):
-    '''
+    """
         Description
         -----------
         Raw Data → 정제된 업무보고서로 변환
@@ -88,7 +87,8 @@ def __load_rpt(path, code):
         -------
         from fss_rpt import load_rpt
         ai059 = __load_rpt('data/업무보고서_201701.xlsx', 'AI059')
-    '''
+    """
+
     locations = {
         'AI004': (11, 2),
         'AI009': (11, 2),
@@ -110,7 +110,7 @@ def __load_rpt(path, code):
     return rpt
 
 def load_rpt_all(path, code):
-    '''
+    """
         Description   
         -----------
         경로 안에 있는 사업실적표 전부 로드하여 dict 형태로 반환
@@ -128,7 +128,7 @@ def load_rpt_all(path, code):
         Example
         -------
         rpt = load_rpt_all('data', 'AI059')
-    '''
+    """
     
     # 기준년월 생성 및 데이터 목록 유효성 검증
     m = re.compile('^업무보고서_\d{6}.xlsx$')
@@ -150,7 +150,7 @@ def load_rpt_all(path, code):
     return rpt
 
 def rpt_value_inc_ts(rpt, row, column):
-    '''
+    """
         Description
         -----------
         dict 형태의 업무보고서 중 특정 변수의 월별 증감액을 출력
@@ -179,7 +179,8 @@ def rpt_value_inc_ts(rpt, row, column):
         inv_profit_ts = rpt_value_inc_ts(rpt, 'K', 'H') # 투자영업이익(총괄)
         net_income_ts = rpt_value_inc_ts(rpt, 'U', 'H') # 당기순이익(총괄)
         tot_income_ts = rpt_value_inc_ts(rpt, 'X', 'H') # 총포괄손익(총괄)
-    '''
+    """
+
     if list(rpt.keys())[0][-2:] != '01':
         raise Exception('기준월 1월로 시작해야 함')
           
@@ -198,7 +199,7 @@ def rpt_value_inc_ts(rpt, row, column):
     return values_inc_ts
 
 def rpt_value_ts(rpt, row, column):
-    '''
+    """
         Description
         -----------
         dict 형태의 업무보고서 중 특정 변수의 시점값을 출력
@@ -220,7 +221,7 @@ def rpt_value_ts(rpt, row, column):
 
         # 데이터 불러오기
         op_asset_ts = rpt_value_ts(rpt, 'A1', 'H') # 운용자산(총괄)
-    '''
+    """
           
     values = {}
     for yyyymm in rpt.keys():
@@ -231,7 +232,7 @@ def rpt_value_ts(rpt, row, column):
     return values_ts
 
 def __load_tb(path):
-    '''
+    """
         Description
         -----------
         Raw Data → 정제된 시산표로 변환
@@ -248,7 +249,7 @@ def __load_tb(path):
         -------
         from fss_rpt import load_tb
         ai059 = __load_tb('data/시산표_20170131.xlsx')
-    '''
+    """
 
     시산표 = pd.read_excel(path)
     시산표2 = 시산표.copy()
@@ -267,18 +268,17 @@ def __load_tb(path):
     시산표2 = 시산표2.query('계정과목 != "                      합             계"')
     return 시산표2
 
-# 기준년월말일자생성
 def generate_enddate(start_yyyymm, end_yyyymm, typ=1):
-    '''
+    """
         Description
         -----------
         기준년월말일자 리스트를 %Y%m%d 형식으로 생성
         
         Example
         -------
-        enddate_list = generate_enddate((2017, 1), (2019, 12))
-        
-    '''
+        enddate_list = generate_enddate((2017, 1), (2019, 12)) 
+    """
+
     (start_year, start_month), (end_year, end_month) = start_yyyymm, end_yyyymm
     enddate_list = []
     year_month = datetime(start_year, start_month, 1)
@@ -292,7 +292,7 @@ def generate_enddate(start_yyyymm, end_yyyymm, typ=1):
     return enddate_list
 
 def load_tb_all(path):
-    '''
+    """
         Description   
         -----------
         경로 안에 있는 사업실적표 전부 로드하여 dict 형태로 반환
@@ -309,7 +309,7 @@ def load_tb_all(path):
         Example
         -------
         rpt = load_rpt_all('data')
-    '''
+    """
     
     # 기준년월 생성 및 데이터 목록 유효성 검증
     m = re.compile('^시산표_\d{8}.xlsx$')
