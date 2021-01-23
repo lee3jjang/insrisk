@@ -1,22 +1,19 @@
-from setuptools import setup, find_packages
-
-PROJECT_URLS = {
-    'Source Code': 'https://github.com/lee3jjang/insrisk'
-}
+from setuptools import setup
 
 DISTNAME = 'insrisk'
 DESCRIPTION = 'Library for Insurance Risk Management'
-MAINTAINER = 'SangJin'
-MAINTAINER_EMAIL = 'lee3jjang@gmail.com'
+AUTHOR = 'SangJin'
+AUTHOR_EMAIL = 'lee3jjang@gmail.com'
+URL = 'https://github.com/lee3jjang/insrisk'
 
 setup(
     name=DISTNAME,
     version='v1.0.0',
-    maintainer=MAINTAINER,
-    maintainer_email=MAINTAINER_EMAIL,
+    author=AUTHOR,
+    author_email=AUTHOR_EMAIL,
     description=DESCRIPTION,
-    project_ruls=PROJECT_URLS,
-    packages=find_packages(),
+    url=URL,
+    packages=['insrisk'],
     python_requires=">=3.6",
     zip_safe=False,
 )
