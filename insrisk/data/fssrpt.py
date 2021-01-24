@@ -5,18 +5,23 @@ from ..tools import *
 
 def load_fssrpt(filepath, code):
     """금감원 업무보고서 파일별 추출 및 가공
-               
-    :param filepath: 업무보고서 파일 경로
-    :type filepath: str
-    :param code: 업무보고서 코드(AI004, AI009, ...)
-    :type code: str
-    :return: 정제된 업무보고서
-    :rtype: DataFrame
-    
-    .. ipython:: python
 
-        from insrisk.data import fssrpt
-        ai059 = fssrpt.load_fssrpt('data/업무보고서_201701.xlsx', 'AI059')
+    Parameters
+    ----------
+    filepath : str
+        업무보고서 파일 경로
+    code : str
+        업무보고서 코드(AI004, AI009, ...)
+
+    Returns
+    -------
+    DataFrame
+        업무보고서
+    
+    Examples
+    --------
+    >>> from insrisk.data import fssrpt
+    >>> ai059 = fssrpt.load_fssrpt('data/업무보고서_201701.xlsx', 'AI059')
     
     """
     code_upper = code.upper()
@@ -52,8 +57,8 @@ def load_fssrpt_all(folderpath, code):
     
     Returns
     -------
-    dict
-        key: 기준년월, value: 보고서(DataFrame) 인 dictionary
+    dict[str, DataFrame]
+        key: 기준년월, value: 업무보고서 dictionary
     
     Examples
     --------
@@ -62,7 +67,7 @@ def load_fssrpt_all(folderpath, code):
     
     Warnings
     --------
-    파일명 "업무보고서_yyyymm.xlsx" 형태로 되어 있어야 함
+    폴더 내 업무보고서 파일명 "업무보고서_yyyymm.xlsx" 형태로 적재되어 있어야 함
 
     """
     
@@ -86,35 +91,38 @@ def load_fssrpt_all(folderpath, code):
     return rpt
 
 def fssrpt_value_inc_ts(rpt, row, column):
-    """
-        Description
-        -----------
-        dict 형태의 업무보고서 중 특정 변수의 월별 증감액을 출력
-        ※ 기준월 1월로 시작해야 함
-        
-        Input
-        -----
-        rpt : load_rpt_all의 output
-        row : 행 Key
-        column : 열 Key
-        
-        Output
-        ------
-        series (key: 기준년월, value: 특정변수)
-        
-        Example
-        -------
-        # 손익계산서 불러오기
-        rpt = load_rpt_all('data', 'AI009')
+    """특정 변수의 월별 증감액 시계열 추출
 
-        # 데이터 불러오기
-        earned_prem_ts = rpt_value_inc_ts(rpt, 'A', 'H') # 경과보험료(총괄)
-        loss_ts = rpt_value_inc_ts(rpt, 'B', 'H') # 발생손해액(총괄)
-        net_expense_ts = rpt_value_inc_ts(rpt, 'D', 'H') # 순사업비(총괄)
-        ins_profit_ts = rpt_value_inc_ts(rpt, 'H', 'H') # 보험영업이익(총괄)
-        inv_profit_ts = rpt_value_inc_ts(rpt, 'K', 'H') # 투자영업이익(총괄)
-        net_income_ts = rpt_value_inc_ts(rpt, 'U', 'H') # 당기순이익(총괄)
-        tot_income_ts = rpt_value_inc_ts(rpt, 'X', 'H') # 총포괄손익(총괄)
+    Parameters
+    ----------
+    rpt : dict[str, DataFrame]
+        load_rpt_all의 output
+    row : str
+        행 Key
+    column : str
+        열 Key
+    
+    Returns
+    -------
+    Series
+        index: 기준년월, value: 값 Series
+    
+    Examples
+    --------
+    >>> rpt = load_rpt_all('data', 'AI009')
+    >>> earned_prem = rpt_value_inc_ts(rpt, 'A', 'H') # 경과보험료(총괄)
+    >>> loss = rpt_value_inc_ts(rpt, 'B', 'H') # 발생손해액(총괄)
+    >>> net_expense = rpt_value_inc_ts(rpt, 'D', 'H') # 순사업비(총괄)
+    >>> ins_profit = rpt_value_inc_ts(rpt, 'H', 'H') # 보험영업이익(총괄)
+    >>> inv_profit = rpt_value_inc_ts(rpt, 'K', 'H') # 투자영업이익(총괄)
+    >>> net_income = rpt_value_inc_ts(rpt, 'U', 'H') # 당기순이익(총괄)
+    >>> tot_income = rpt_value_inc_ts(rpt, 'X', 'H') # 총포괄손익(총괄)
+
+    Warnings
+    --------
+        * 입력 업무보고서의 기준년월은 무조건 1월부터 시작 되있어야 함
+        * 회계년도 1월에 시작을 가정(그 이전 회계년도에서는 사용불가능)
+
     """
 
     if list(rpt.keys())[0][-2:] != '01':
@@ -135,28 +143,27 @@ def fssrpt_value_inc_ts(rpt, row, column):
     return values_inc_ts
 
 def fssrpt_value_ts(rpt, row, column):
-    """
-        Description
-        -----------
-        dict 형태의 업무보고서 중 특정 변수의 시점값을 출력
+    """특정 변수의 월별 시계열 추출
         
-        Input
-        -----
-        rpt : load_rpt_all의 output
-        row : 행 Key
-        column : 열 Key
+    Parameters
+    ----------
+    rpt : dict[str, DataFrame]
+        load_rpt_all의 output
+    row : str
+        행 Key
+    column : str
+        열 Key
+    
+    Returns
+    -------
+    Series
+        index: 기준년월, value: 값 Series
         
-        Output
-        ------
-        series (key: 기준년월, value: 특정변수)
-        
-        Example
-        -------
-        # 손익계산서 불러오기
-        rpt = load_rpt_all('data', 'AI004')
-
-        # 데이터 불러오기
-        op_asset_ts = rpt_value_ts(rpt, 'A1', 'H') # 운용자산(총괄)
+    Examples
+    --------
+    rpt = load_rpt_all('data', 'AI004')
+    op_asset = rpt_value_ts(rpt, 'A1', 'H') # 운용자산(총괄)
+    
     """
           
     values = {}

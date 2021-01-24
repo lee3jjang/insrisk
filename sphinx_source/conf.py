@@ -89,8 +89,8 @@ html_theme_options = {
     'repo_type': 'github',
     'logo_icon': '&#xe80e',
     "master_doc": False,
-    'html_minify': False,
-    'css_minify': False,
+    'html_minify': True,
+    'css_minify': True,
     'version_dropdown': True,
     'google_analytics_account': 'UA-XXXXX',
     'version_info': {
