@@ -3,14 +3,14 @@ import re
 import pandas as pd
 from ..tools import *
 
-def load_fssrpt(filepath, code):
+def load_fssrpt(filepath, rptcode):
     """금감원 업무보고서 파일별 추출 및 가공
 
     Parameters
     ----------
     filepath : str
         업무보고서 파일 경로
-    code : str
+    rptcode : str
         업무보고서 코드(AI004, AI009, ...)
 
     Returns
@@ -24,7 +24,7 @@ def load_fssrpt(filepath, code):
     >>> ai059 = fssrpt.load_fssrpt('data/업무보고서_201701.xlsx', 'AI059')
     
     """
-    code_upper = code.upper()
+    code_upper = rptcode.upper()
     locations = {
         'AI004': (11, 2),
         'AI009': (11, 2),
@@ -45,14 +45,14 @@ def load_fssrpt(filepath, code):
     rpt = pd.DataFrame(df.iloc[x:, y:].values, index=index, columns=columns).fillna(0).astype(float)
     return rpt
 
-def load_fssrpt_all(folderpath, code):
+def load_fssrpt_all(folderpath, rptcode):
     """금감원 업무보고서 폴더별 추출 및 가공
 
     Parameters
     ----------
     folderpath : str
         업무보고서 폴더 경로
-    code : str
+    rptcode : str
         업무보고서 코드 (AI059, AI004 등)
     
     Returns
@@ -86,7 +86,7 @@ def load_fssrpt_all(folderpath, code):
     # 데이터 로드
     rpt = {}
     for yyyymm in yyyymm_list:
-        rpt[yyyymm] = load_fssrpt(os.path.join(folderpath, '업무보고서_{}.xlsx'.format(yyyymm)), code)
+        rpt[yyyymm] = load_fssrpt(os.path.join(folderpath, '업무보고서_{}.xlsx'.format(yyyymm)), rptcode)
         
     return rpt
 
@@ -96,7 +96,7 @@ def fssrpt_value_inc_ts(rpt, row, column):
     Parameters
     ----------
     rpt : dict[str, DataFrame]
-        load_rpt_all의 output
+        load_rpt_all의 returns
     row : str
         행 Key
     column : str
@@ -148,7 +148,7 @@ def fssrpt_value_ts(rpt, row, column):
     Parameters
     ----------
     rpt : dict[str, DataFrame]
-        load_rpt_all의 output
+        load_rpt_all의 returns
     row : str
         행 Key
     column : str
@@ -163,7 +163,7 @@ def fssrpt_value_ts(rpt, row, column):
     --------
     rpt = load_rpt_all('data', 'AI004')
     op_asset = rpt_value_ts(rpt, 'A1', 'H') # 운용자산(총괄)
-    
+
     """
           
     values = {}
